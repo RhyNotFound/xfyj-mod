@@ -61,6 +61,17 @@ gradlew.bat build
 把该 jar 放进 `.minecraft/mods/`，同时安装 **Fabric Loader ≥ 0.19.3** 与
 **Fabric API 0.156.0+26.2**。
 
+### CI 工作流需要手动启用
+
+本地仓库里有 `.github/workflows/build.yml`（GitHub Actions：推送后自动用 JDK 25
+构建并上传 jar 成品）。但 GitHub 出于安全考虑，**禁止通过 API 写入
+`.github/workflows/**`** —— 用 token 调用 Git Data API 或 Contents API 都会返回
+404，所以这个文件没能随首次推送上传。三种启用方式，任选一种：
+
+1. 在网页上新建文件 `.github/workflows/build.yml`，内容直接复制本地那份；
+2. 用已登录的 git 客户端推送（`git push` 走的是 git 协议，不受此限制）；
+3. 不需要 CI 就忽略它，`gradlew.bat build` 本地构建完全不受影响。
+
 ### 国内网络：Gradle 发行包下载超时
 
 首次构建会自动下载 Gradle 9.5.1（134 MB）。官方
