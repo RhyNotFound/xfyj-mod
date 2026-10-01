@@ -1,0 +1,68 @@
+// OPTIONAL: route the build's Maven repositories through China-friendly mirrors.
+//
+// Off by default. Enable it when downloads from maven.fabricmc.net /
+// libraries.minecraft.net / repo.maven.apache.org are slow or fail:
+//
+//   gradlew.bat build -PuseMirrors
+//
+// If a mirror ever 404s, drop the flag and build against the official hosts.
+
+def enabled = project.hasProperty('useMirrors')
+
+def rewrites = [
+		'https://maven.fabricmc.net/'          : 'https://bmclapi2.bangbang93.com/maven/',
+		'https://libraries.minecraft.net/'     : 'https://bmclapi2.bangbang93.com/maven/',
+		'https://libraries.minecraft.net'      : 'https://bmclapi2.bangbang93.com/maven/',
+		'https://repo.maven.apache.org/maven2/': 'https://maven.aliyun.com/repository/public/',
+		'https://repo1.maven.org/maven2/'      : 'https://maven.aliyun.com/repository/public/',
+]
+
+def rewrite = { Object url ->
+	if (url == null) {
+		return null
+	}
+
+	def value = url.toString()
+
+	for (entry in rewrites) {
+		if (value.startsWith(entry.key) && value != entry.value) {
+			return entry.value + value.substring(entry.key.length())
+		}
+	}
+
+	return null
+}
+
+settingsEvaluated { settings ->
+	println "[mirror] useMirrors=${enabled}"
+
+	if (!enabled) {
+		return
+	}
+
+	settings.pluginManagement.repositories.each { repo ->
+		def replacement = rewrite(repo.url)
+
+		if (replacement != null) {
+			repo.url = replacement
+			println "[mirror] plugin repository ${repo.name} -> ${replacement}"
+		}
+	}
+}
+
+allprojects {
+	afterEvaluate {
+		if (!enabled) {
+			return
+		}
+
+		repositories.each { repo ->
+			def replacement = rewrite(repo.url)
+
+			if (replacement != null) {
+				repo.url = replacement
+				println "[mirror] repository ${repo.name} -> ${replacement}"
+			}
+		}
+	}
+}

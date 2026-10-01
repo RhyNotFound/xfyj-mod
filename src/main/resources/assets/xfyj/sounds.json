@@ -1,0 +1,13 @@
+{
+	"music_disc.xfyj": {
+		"subtitle": "subtitles.xfyj.music_disc_xfyj",
+		"sounds": [
+			{
+				"name": "xfyj:records/xfyj",
+				"stream": true,
+				"attenuation_distance": 16,
+				"volume": 4.0
+			}
+		]
+	}
+}

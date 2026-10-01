@@ -1,0 +1,25 @@
+{
+	"schemaVersion": 1,
+	"id": "xfyj",
+	"version": "${version}",
+	"name": "星拂云锦",
+	"description": "为游戏添加一张音乐唱片：S9ryne - 星拂云锦 feat. koi。\nAdds the music disc \"S9ryne - 星拂云锦 feat. koi\".",
+	"authors": [
+		"S9ryne"
+	],
+	"contact": {},
+	"license": "CC0-1.0",
+	"icon": "assets/xfyj/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.xfyj.Xfyj"
+		]
+	},
+	"depends": {
+		"fabricloader": ">=0.19.3",
+		"minecraft": "~26.2",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}
